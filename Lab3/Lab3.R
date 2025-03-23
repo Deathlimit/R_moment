@@ -83,3 +83,48 @@ data_female_without_zeros <- data_female_without_zeros[data_female_without_zeros
 
 pie(data_female_without_zeros, main = "Количество призовых мест Германии по велоспорту (Женщины)",
     col = rainbow(length(data_female_without_zeros)), labels = paste(names(data_female_without_zeros), " (", data_female_without_zeros, ")", sep = ""))
+
+
+#Графики по всем странам
+data_table_all <- read_excel("C:/Users/rim/Documents/R_lab3/results_all_coutries.xlsx")
+filtered_all <- subset(data_table_all, Medal == "Gold")
+filtered_all
+
+#Только первые места
+medals_by_year_country <- aggregate(Medal ~ Year + Country, data = filtered_all, FUN = length)
+
+countries <- unique(medals_by_year_country$Country)
+
+plot(NULL, 
+     xlim = range(medals_by_year_country$Year), 
+     ylim = c(0, max(medals_by_year_country$Medal)), 
+     xlab = "Год", 
+     ylab = "Количество медалей", 
+     main = "График изменения спортивных достижений по золотым медалям")
+
+for (country in countries) {
+  country_data <- subset(medals_by_year_country, Country == country)
+  lines(country_data$Year, country_data$Medal, type = "o", col = which(country == countries), lwd = 2, pch = 10)
+}
+
+legend("topright", legend = countries, col = seq_along(countries), lwd = 2, pch = 10, title = "Страна")
+
+#Призовые места
+medals_by_year_country_all <- aggregate(Medal ~ Year + Country, data = data_table_all, FUN = length)
+
+countries_all <- unique(medals_by_year_country_all$Country)
+
+plot(NULL, 
+     xlim = range(medals_by_year_country_all$Year), 
+     ylim = c(0, max(medals_by_year_country_all$Medal)), 
+     xlab = "Год", 
+     ylab = "Количество медалей", 
+     main = "График изменения спортивных достижений по призовым местам")
+
+for (country in countries_all) {
+  country_data_all <- subset(medals_by_year_country_all, Country == country)
+  lines(country_data_all$Year, country_data_all$Medal, type = "o", col = which(country == countries_all), lwd = 2, pch = 10)
+}
+
+legend("topright", legend = countries_all, col = seq_along(countries_all), lwd = 2, pch = 10, title = "Страна")
+
