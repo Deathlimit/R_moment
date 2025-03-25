@@ -1,6 +1,6 @@
 library(readxl)
 
-data_table <- read_excel("C:/Users/rim/Documents/R_lab3/results.xlsx")
+data_table <- read_excel("D:/R/R_lab3/results.xlsx")
 
 data_p <- data_table[, -c(1,2,11,20)]
 
@@ -27,7 +27,8 @@ barplot(t(data_p_combined), beside = TRUE, col = rainbow(8),
 data_only_first <- data_p_combined[, 1]
 data_without_zeros <- data_only_first[data_only_first != 0]
 pie(data_without_zeros, main = "Количество первых мест Германии по велоспорту",
-    col = rainbow(length(data_without_zeros)), labels = paste(names(data_without_zeros), " (", data_without_zeros, ")", sep = ""))
+    col = rainbow(length(data_without_zeros)), labels = data_without_zeros)
+legend("topright", legend = names(data_without_zeros), col = rainbow(length(data_without_zeros)), lwd = 2, pch = 10, title = "Страна")
 
 
 
@@ -76,17 +77,18 @@ data_male_without_zeros <- data_mw_matrix[,1]
 data_male_without_zeros <- data_male_without_zeros[data_male_without_zeros != 0]
 
 pie(data_male_without_zeros, main = "Количество призовых мест Германии по велоспорту (Мужчины)",
-    col = rainbow(length(data_male_without_zeros)), labels = paste(names(data_male_without_zeros), " (", data_male_without_zeros, ")", sep = ""))
+    col = rainbow(length(data_male_without_zeros)), labels = data_male_without_zeros)
+legend("topright", legend = names(data_male_without_zeros), col = rainbow(length(data_male_without_zeros)), lwd = 2, pch = 10, title = "Страна", xpd = TRUE, inset = c(-0.3, 0))
 
 data_female_without_zeros <- data_mw_matrix[,2]
 data_female_without_zeros <- data_female_without_zeros[data_female_without_zeros != 0]
 
 pie(data_female_without_zeros, main = "Количество призовых мест Германии по велоспорту (Женщины)",
-    col = rainbow(length(data_female_without_zeros)), labels = paste(names(data_female_without_zeros), " (", data_female_without_zeros, ")", sep = ""))
-
+    col = rainbow(length(data_female_without_zeros)), labels = data_female_without_zeros)
+legend("topright", legend = names(data_female_without_zeros), col = rainbow(length(data_female_without_zeros)), lwd = 2, pch = 10, title = "Страна", xpd = TRUE, inset = c(-0.3, 0))
 
 #Графики по всем странам
-data_table_all <- read_excel("C:/Users/rim/Documents/R_lab3/results_all_coutries.xlsx")
+data_table_all <- read_excel("D:/R/R_lab3/results_all_coutries.xlsx")
 filtered_all <- subset(data_table_all, Medal == "Gold")
 filtered_all
 
@@ -106,7 +108,6 @@ for (country in countries) {
   country_data <- subset(medals_by_year_country, Country == country)
   lines(country_data$Year, country_data$Medal, type = "o", col = which(country == countries), lwd = 2, pch = 10)
 }
-
 legend("topright", legend = countries, col = seq_along(countries), lwd = 2, pch = 10, title = "Страна")
 
 #Призовые места
@@ -125,6 +126,5 @@ for (country in countries_all) {
   country_data_all <- subset(medals_by_year_country_all, Country == country)
   lines(country_data_all$Year, country_data_all$Medal, type = "o", col = which(country == countries_all), lwd = 2, pch = 10)
 }
-
 legend("topright", legend = countries_all, col = seq_along(countries_all), lwd = 2, pch = 10, title = "Страна")
 
