@@ -10,13 +10,13 @@ for (year in years) {
   filename <- paste0("quality_of_life_", year, ".html")
   download.file(url, destfile = filename, quiet = TRUE)
   
-
   content <- read_html(filename)
   nodes <- html_nodes(content, "table")
-  df <- html_table(nodes[[2]], fill = TRUE) %>% as.data.frame()
+  df <- html_table(nodes[[2]], fill = TRUE)
+  df <- as.data.frame(df)
+  
   df <- df[, -1]
   
-
   colnames(df) <- c(
     "Country", "Quality_of_Life_Index", 
     "Purchasing_Power_Index", "Safety_Index", 
@@ -26,14 +26,11 @@ for (year in years) {
     "Pollution_Index", "Climate_Index", "Extra"
   )[1:ncol(df)]
   
-  df_filtered <- df %>% filter(Country %in% target_countries)
+  df_filtered <- df[df$Country %in% target_countries, ]
   
-
   assign(paste0("df_", year), df_filtered)
-  
   assign(paste0("df_filtered_", year), df_filtered)
 }
-
 
 
 #собираем данные из df_filtered 
