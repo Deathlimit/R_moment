@@ -4,17 +4,17 @@ library(stringr)
 url <- "https://kudago.com/spb/list/33-luchshih-muzeya-peterburga/"
 filename <- "best_museums.html"
 download.file(url, destfile = filename, quiet = TRUE)
-
+.libPaths()
 
 content <- read_html(filename, encoding = "UTF-8")
 
 
 museum_names <- content %>%
-  html_nodes(xpath = "/html/body/div[8]/div/section/div/div[3]/div[2]/article/div[2]/h3/a/span") %>%
+  html_nodes(xpath = "/html/body/div[8]/div/section/div/div[3]/div[2]/article[not(@id='item-295558')]/div[position()=2 or (position()=1 and not(../div[2]))]/h3/a/span") %>%
   html_text()
 
 museum_addresses <- content %>%
-  html_nodes(xpath = "/html/body/div[8]/div/section/div/div[3]/div[2]/article/div[2]/address/span") %>%
+  html_nodes(xpath = "/html/body/div[8]/div/section/div/div[3]/div[2]/article[not(@id='item-295558')]/div[position()=2 or (position()=1 and not(../div[2]))]/address/span") %>%
   html_text()
 
 museum_addresses <- sapply(museum_addresses, function(x) {
@@ -22,11 +22,11 @@ museum_addresses <- sapply(museum_addresses, function(x) {
 })
 
 museum_descriptions <- content %>%
-  html_nodes(xpath = "/html/body/div[8]/div/section/div/div[3]/div[2]/article/div[2]/div[1]/p") %>%
+  html_nodes(xpath = "/html/body/div[8]/div/section/div/div[3]/div[2]/article[not(@id='item-295558')]/div[position()=2 or (position()=1 and not(../div[2]))]/div[1]/p") %>%
   html_text()
 
 museum_link <- content %>%
-  html_nodes(xpath = "/html/body/div[8]/div/section/div/div[3]/div[2]/article/div[1]/a/@href") %>%
+  html_nodes(xpath = "/html/body/div[8]/div/section/div/div[3]/div[2]/article[not(@id='item-295558')]/div[position()=2 or (position()=1 and not(../div[2]))]/h3/a/@href") %>%
   html_text()
 
 
